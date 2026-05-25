@@ -1,12 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import "./App.css";
+
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 
 function App() {
 
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(() => {
+
+        const savedTasks =
+            localStorage.getItem("tasks");
+
+        return savedTasks
+            ? JSON.parse(savedTasks)
+            : [];
+    });
+
+    const [editingTask, setEditingTask] = useState(null);
+
+    const [filter, setFilter] = useState("Todas");
+
+    const [priorityFilter, setPriorityFilter] = useState("Todas");
+
+    const [sortOption, setSortOption] = useState("");
+
+    useEffect(() => {
+
+        localStorage.setItem(
+            "tasks",
+            JSON.stringify(tasks)
+        );
+
+    }, [tasks]);
 
     const addTask = (task) => {
+
         setTasks([...tasks, task]);
     };
 
@@ -17,31 +45,48 @@ function App() {
         );
 
         if (confirmDelete) {
-            setTasks(tasks.filter((task) => task.id !== id));
-            alert("Tarea eliminada");
+
+            setTasks(
+                tasks.filter((task) => task.id !== id)
+            );
         }
     };
 
     const toggleComplete = (id) => {
+
         setTasks(
             tasks.map((task) =>
+
                 task.id === id
-                    ? { ...task, status: task.status === "Completada" ? "Pendiente" : "Completada" }
+
+                    ? {
+                        ...task,
+
+                        status:
+                            task.status === "Completada"
+                                ? "Pendiente"
+                                : "Completada"
+                    }
+
                     : task
             )
         );
     };
 
-    const [editingTask, setEditingTask] = useState(null);
-
     const startEdit = (task) => {
+
         setEditingTask(task);
     };
 
     const updateTask = (updatedTask) => {
+
         setTasks(
+
             tasks.map((task) =>
-                task.id === updatedTask.id ? updatedTask : task
+
+                task.id === updatedTask.id
+                    ? updatedTask
+                    : task
             )
         );
 
@@ -49,17 +94,19 @@ function App() {
     };
 
     const cancelEdit = () => {
+
         setEditingTask(null);
     };
-
-    const [filter, setFilter] = useState("Todas");
 
     const filteredTasks = tasks.filter((task) => {
 
         const statusMatch =
-            filter === "Todas" || task.status === filter;
+
+            filter === "Todas" ||
+            task.status === filter;
 
         const priorityMatch =
+
             priorityFilter === "Todas" ||
             task.priority === priorityFilter;
 
@@ -69,24 +116,31 @@ function App() {
     const sortedTasks = [...filteredTasks].sort((a, b) => {
 
         if (sortOption === "title-asc") {
+
             return a.title.localeCompare(b.title);
         }
 
         if (sortOption === "title-desc") {
+
             return b.title.localeCompare(a.title);
         }
 
         if (sortOption === "newest") {
+
             return b.id - a.id;
         }
 
         if (sortOption === "oldest") {
+
             return a.id - b.id;
         }
 
         if (sortOption === "dueDate") {
+
             return (
+
                 new Date(a.dueDate || "9999-12-31") -
+
                 new Date(b.dueDate || "9999-12-31")
             );
         }
@@ -94,13 +148,16 @@ function App() {
         if (sortOption === "priority") {
 
             const priorityOrder = {
+
                 Alta: 1,
                 Media: 2,
                 Baja: 3
             };
 
             return (
+
                 priorityOrder[a.priority] -
+
                 priorityOrder[b.priority]
             );
         }
@@ -108,12 +165,9 @@ function App() {
         return 0;
     });
 
-    const [priorityFilter, setPriorityFilter] = useState("Todas");
-
-    const [sortOption, setSortOption] = useState("");
-
     return (
         <>
+
             <h1>Gestor de Tareas</h1>
 
             <TaskForm
@@ -123,45 +177,72 @@ function App() {
                 cancelEdit={cancelEdit}
             />
 
-            <p>Total de tareas: {tasks.length}</p>
+            <p>
+                Total de tareas: {tasks.length}
+            </p>
 
-            <div>
-                <button onClick={() => setFilter("Todas")}>
+            <div className="filter-group">
+
+                <button
+                    onClick={() => setFilter("Todas")}
+                >
                     Todas
                 </button>
 
-                <button onClick={() => setFilter("Pendiente")}>
+                <button
+                    onClick={() => setFilter("Pendiente")}
+                >
                     Pendientes
                 </button>
 
-                <button onClick={() => setFilter("En Progreso")}>
+                <button
+                    onClick={() => setFilter("En Progreso")}
+                >
                     En Progreso
                 </button>
 
-                <button onClick={() => setFilter("Completada")}>
+                <button
+                    onClick={() => setFilter("Completada")}
+                >
                     Completadas
                 </button>
+
             </div>
 
-            <div>
-                <button onClick={() => setPriorityFilter("Todas")}>
+            <div className="filter-group">
+
+                <button
+                    onClick={() => setPriorityFilter("Todas")}
+                >
                     Todas las prioridades
                 </button>
 
-                <button onClick={() => setPriorityFilter("Alta")}>
+                <button
+                    onClick={() => setPriorityFilter("Alta")}
+                >
                     Alta
                 </button>
 
-                <button onClick={() => setPriorityFilter("Media")}>
+                <button
+                    onClick={() => setPriorityFilter("Media")}
+                >
                     Media
                 </button>
 
-                <button onClick={() => setPriorityFilter("Baja")}>
+                <button
+                    onClick={() => setPriorityFilter("Baja")}
+                >
                     Baja
                 </button>
+
             </div>
 
-            <select onChange={(e) => setSortOption(e.target.value)}>
+            <select
+                className="sort-select"
+                onChange={(e) =>
+                    setSortOption(e.target.value)
+                }
+            >
 
                 <option value="">
                     Sin ordenar
@@ -199,6 +280,7 @@ function App() {
                 toggleComplete={toggleComplete}
                 startEdit={startEdit}
             />
+
         </>
     );
 }

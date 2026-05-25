@@ -49,7 +49,7 @@ function TaskForm({ addTask, editingTask, updateTask, cancelEdit }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="task-form" onSubmit={handleSubmit}>
 
             <h2>
                 {editingTask ? "Editar Tarea" : "Crear Tarea"}

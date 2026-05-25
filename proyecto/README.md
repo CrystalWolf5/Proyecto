@@ -1,18 +1,45 @@
-# React + Vite
+# Gestor de Tareas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web desarrollada con React y Vite para la gestión de tareas mediante operaciones CRUD.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Objetivo del proyecto
 
-## React Compiler
+El objetivo de esta aplicación es permitir al usuario crear, editar, eliminar y gestionar tareas de forma sencilla e intuitiva.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+La aplicación incluye filtros, ordenación y persistencia de datos utilizando LocalStorage.
 
-Note: This will impact Vite dev & build performances.
+---
 
-## Expanding the ESLint configuration
+## Funcionalidades
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Crear tareas
+- Editar tareas
+- Eliminar tareas
+- Marcar tareas como completadas
+- Filtrar por estado
+- Filtrar por prioridad
+- Ordenar tareas
+- Persistencia de datos con LocalStorage
+- Diseño responsive
+
+---
+
+## Tecnologías utilizadas
+
+- React
+- Vite
+- JavaScript
+- CSS
+- React Hooks (`useState`, `useEffect`)
+- LocalStorage
+
+---
+
+## Instalación y ejecución
+
+1. Instalar dependencias
+
+```bash
+npm install
